@@ -22,7 +22,7 @@ class Command(BaseCommand):
         default_password = 'admin'
 
         # Create User objects from the data and save to database
-        for user in user_data["users"]:
+        for user in user_data:
            
             try:
                 u = User.objects.create(username=user['name'], cash_balance=user['cash_balance'])
