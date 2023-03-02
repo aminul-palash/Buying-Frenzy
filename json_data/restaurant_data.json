@@ -1,18 +1,18 @@
 [
     {
-        "name": "Pizza Place",
-        "cash_balance": 10000.00,
+        "restaurantName": "Pizza Place",
+        "cashBalance": 10000.00,
         "menu": [
             {
-                "dish_name": "Pepperoni Pizza",
+                "dishName": "Pepperoni Pizza",
                 "price": 9.99
             },
             {
-                "dish_name": "Mushroom Pizza",
+                "dishName": "Mushroom Pizza",
                 "price": 8.99
             }
         ],
-        "opening_hours": [
+        "openingHours": [
             {
                 "day_of_week": 0,
                 "start_time": "11:00",
@@ -51,19 +51,19 @@
         ]
     },
     {
-        "name": "Burger Joint",
-        "cash_balance": 8000.00,
+        "restaurantName": "Burger Joint",
+        "cashBalance": 8000.00,
         "menu": [
             {
-                "dish_name": "Cheeseburger",
+                "dishName": "Cheeseburger",
                 "price": 6.99
             },
             {
-                "dish_name": "Bacon Cheeseburger",
+                "dishName": "Bacon Cheeseburger",
                 "price": 8.99
             }
         ],
-        "opening_hours": [
+        "openingHours": [
             {
                 "day_of_week": 0,
                 "start_time": "11:00",

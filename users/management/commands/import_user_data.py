@@ -25,23 +25,23 @@ class Command(BaseCommand):
         for user in user_data:
            
             try:
-                u = User.objects.create(username=user['name'], cash_balance=user['cash_balance'])
+                u = User.objects.create(username=user['name'], cash_balance=user['cashBalance'])
                 u.set_password(default_password)
                 u.save()
             except KeyError as e:
                 print(f"Error creating user: {e}")
                 continue
-            for purchase in user['purchase_history']:
+            for purchase in user['purchaseHistory']:
                 try:
                     # Retrieve restaurant based on its name in the purchase history
-                    restaurant = Restaurant.objects.get(name=purchase['restaurant_name'])
+                    restaurant = Restaurant.objects.get(name=purchase['restaurantName'])
                     # Retrieve menu item based on its name and restaurant_id
-                    menu_item = Menu.objects.get(dish_name=purchase['dish_name'], restaurant_id=restaurant.id)
+                    menu_item = Menu.objects.get(dish_name=purchase['dishName'], restaurant_id=restaurant.id)
                     # Create PurchaseHistory object and save to database
                    
-                    purchase['transaction_date'] = datetime.datetime.strptime(purchase['transaction_date'], "%Y-%m-%d %H:%M:%S")
-                    purchase['transaction_date'] = timezone.make_aware(purchase['transaction_date'], timezone.get_default_timezone())
-                    Purchase_History.objects.create(user=u, restaurant=restaurant, menu=menu_item, transaction_amount=purchase['transaction_amount'], transaction_date=purchase['transaction_date'])
+                    purchase['transactionDate'] = datetime.datetime.strptime(purchase['transactionDate'], "%Y-%m-%d %H:%M:%S")
+                    purchase['transactionDate'] = timezone.make_aware(purchase['transactionDate'], timezone.get_default_timezone())
+                    Purchase_History.objects.create(user=u, restaurant=restaurant, menu=menu_item, transaction_amount=purchase['transactionAmount'], transaction_date=purchase['transactionDate'])
                 except (KeyError, Restaurant.DoesNotExist, Menu.DoesNotExist) as e:
                     print(f"Error creating purchase history for user {u.username}: {e}")
                     continue

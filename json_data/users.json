@@ -1,49 +1,49 @@
 [
       {
         "name": "John_Doe",
-        "cash_balance": 100.50,
-        "purchase_history": [
+        "cashBalance": 100.50,
+        "purchaseHistory": [
           {
-            "restaurant_name": "Pizza Place",
-            "dish_name": "Pepperoni Pizza",
-            "transaction_amount": 10.00,
-            "transaction_date": "2022-02-15 12:30:00"
+            "restaurantName": "Pizza Place",
+            "dishName": "Pepperoni Pizza",
+            "transactionAmount": 10.00,
+            "transactionDate": "2022-02-15 12:30:00"
           },
           {
-            "restaurant_name": "Burger Joint",
-            "dish_name": "Cheeseburger",
-            "transaction_amount": 8.50,
-            "transaction_date": "2022-02-20 18:45:00"
+            "restaurantName": "Burger Joint",
+            "dishName": "Cheeseburger",
+            "transactionAmount": 8.50,
+            "transactionDate": "2022-02-20 18:45:00"
           }
         ]
       },
       {
         "name": "Jane_Smith",
-        "cash_balance": 50.00,
-        "purchase_history": [
+        "cashBalance": 50.00,
+        "purchaseHistory": [
           {
-            "restaurant_name": "Pizza Place",
-            "dish_name": "Pepperoni Pizza",
-            "transaction_amount": 12.00,
-            "transaction_date": "2022-02-18 19:00:00"
+            "restaurantName": "Pizza Place",
+            "dishName": "Pepperoni Pizza",
+            "transactionAmount": 12.00,
+            "transactionDate": "2022-02-18 19:00:00"
           }
         ]
       },
       {
         "name": "Bob_Johnson",
-        "cash_balance": 75.25,
-        "purchase_history": [
+        "cashBalance": 75.25,
+        "purchaseHistory": [
           {
-            "restaurant_name": "Pizza Place",
-            "dish_name": "Pepperoni Pizza",
-            "transaction_amount": 6.00,
-            "transaction_date": "2022-02-21 13:15:00"
+            "restaurantName": "Pizza Place",
+            "dishName": "Pepperoni Pizza",
+            "transactionAmount": 6.00,
+            "transactionDate": "2022-02-21 13:15:00"
           },
           {
-            "restaurant_name": "Pizza Place",
-            "dish_name": "Mushroom Pizza",
-            "transaction_amount": 12.00,
-            "transaction_date": "2022-02-22 20:00:00"
+            "restaurantName": "Pizza Place",
+            "dishName": "Mushroom Pizza",
+            "transactionAmount": 12.00,
+            "transactionDate": "2022-02-22 20:00:00"
           }
         ]
       }
