@@ -1,8 +1,10 @@
 from django.db import models
+import uuid
 from django.utils import timezone
 
 
 class Restaurant(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     cash_balance = models.DecimalField(max_digits=8, decimal_places=2)
 

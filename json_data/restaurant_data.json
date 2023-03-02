@@ -1,0 +1,104 @@
+[
+    {
+        "name": "Pizza Place",
+        "cash_balance": 10000.00,
+        "menu": [
+            {
+                "dish_name": "Pepperoni Pizza",
+                "price": 9.99
+            },
+            {
+                "dish_name": "Mushroom Pizza",
+                "price": 8.99
+            }
+        ],
+        "opening_hours": [
+            {
+                "day_of_week": 0,
+                "start_time": "11:00",
+                "end_time": "22:00"
+            },
+            {
+                "day_of_week": 1,
+                "start_time": "11:00",
+                "end_time": "22:00"
+            },
+            {
+                "day_of_week": 2,
+                "start_time": "11:00",
+                "end_time": "22:00"
+            },
+            {
+                "day_of_week": 3,
+                "start_time": "11:00",
+                "end_time": "22:00"
+            },
+            {
+                "day_of_week": 4,
+                "start_time": "11:00",
+                "end_time": "23:00"
+            },
+            {
+                "day_of_week": 5,
+                "start_time": "11:00",
+                "end_time": "23:00"
+            },
+            {
+                "day_of_week": 6,
+                "start_time": "11:00",
+                "end_time": "22:00"
+            }
+        ]
+    },
+    {
+        "name": "Burger Joint",
+        "cash_balance": 8000.00,
+        "menu": [
+            {
+                "dish_name": "Cheeseburger",
+                "price": 6.99
+            },
+            {
+                "dish_name": "Bacon Cheeseburger",
+                "price": 8.99
+            }
+        ],
+        "opening_hours": [
+            {
+                "day_of_week": 0,
+                "start_time": "11:00",
+                "end_time": "22:00"
+            },
+            {
+                "day_of_week": 1,
+                "start_time": "11:00",
+                "end_time": "22:00"
+            },
+            {
+                "day_of_week": 2,
+                "start_time": "11:00",
+                "end_time": "22:00"
+            },
+            {
+                "day_of_week": 3,
+                "start_time": "11:00",
+                "end_time": "22:00"
+            },
+            {
+                "day_of_week": 4,
+                "start_time": "11:00",
+                "end_time": "23:00"
+            },
+            {
+                "day_of_week": 5,
+                "start_time": "11:00",
+                "end_time": "23:00"
+            },
+            {
+                "day_of_week": 6,
+                "start_time": "11:00",
+                "end_time": "22:00"
+            }
+        ]
+    }
+]

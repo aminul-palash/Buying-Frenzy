@@ -12,6 +12,10 @@ class UserDetailAPIView(RetrieveAPIView):
     def get_object(self):
         return self.request.user
     
+class UserCreateView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    
 
 class PurchaseHistoryList(generics.ListCreateAPIView):
     queryset = Purchase_History.objects.all()
