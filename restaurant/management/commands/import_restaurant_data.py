@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 import json,uuid
+import datetime
 from restaurant.models import Restaurant, Menu, OpeningHours
 
 class Command(BaseCommand):
@@ -27,6 +28,8 @@ class Command(BaseCommand):
             for menu_item in restaurant['menu']:
                 m = Menu.objects.create(restaurant_id=r.id, dish_name=menu_item['dish_name'], price=menu_item['price'])
             for opening_hours in restaurant['opening_hours']:
+                opening_hours['start_time'] = datetime.datetime.strptime(opening_hours['start_time'], "%H:%M").time()
+                opening_hours['end_time'] = datetime.datetime.strptime(opening_hours['end_time'], "%H:%M").time()
                 oh = OpeningHours.objects.create(restaurant_id=r.id, day_of_week=opening_hours['day_of_week'],
                                                 start_time=opening_hours['start_time'], end_time=opening_hours['end_time'])
 

@@ -1,4 +1,5 @@
 import os
+
 import json
 from django.core.management import execute_from_command_line
 
@@ -25,3 +26,5 @@ with open('json_data/restaurant_data.json') as f:
 # Call the management command with the data argument
 execute_from_command_line(['manage.py', 'import_restaurant_data', '--app', 'restaurant', '--data', json.dumps(restaurant_data)])
 execute_from_command_line(['manage.py', 'import_user_data', '--app', 'user', '--data', json.dumps(user_data)])
+
+print("data imported succesfully !")
