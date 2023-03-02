@@ -4,7 +4,7 @@ from .models import Restaurant, Menu, OpeningHours
 class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menu
-        fields = ('id', 'restaurant', 'dish_name', 'price')
+        fields = '__all__'
 
 class OpeningHoursSerializer(serializers.ModelSerializer):
     class Meta:

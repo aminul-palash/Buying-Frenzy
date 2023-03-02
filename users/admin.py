@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import User, Purchase_History
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('id', 'username', 'email', 'cash_balance', 'is_staff')
@@ -18,4 +18,5 @@ class CustomUserAdmin(UserAdmin):
     )
 
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Purchase_History)
 

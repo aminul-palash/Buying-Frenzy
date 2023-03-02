@@ -9,7 +9,6 @@ class Restaurant(models.Model):
     def __str__(self):
         return self.name
 
-
 class Menu(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='menus')
     dish_name = models.CharField(max_length=100)

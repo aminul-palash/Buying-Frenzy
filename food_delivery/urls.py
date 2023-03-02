@@ -13,14 +13,6 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-# from django.contrib import admin
-# from django.urls import path
-# from django.urls import include
-
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     path('api/',include("users.urls")),
-# ]
 
 from django.contrib import admin
 from django.urls import path, include
@@ -29,6 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')), # Add Django REST Framework auth views
     path('api/', include('users.urls')), # Include users app URLs
-    path('api/', include('purchase_history.urls')), # Include purchase_history app URLs
+    # path('api/', include('purchase_history.urls')), # Include purchase_history app URLs
     path('api/', include('restaurant.urls')), # Include purchase_history app URLs
 ]

@@ -39,7 +39,7 @@ class TopRestaurantsView(APIView):
 
         # Filter restaurants by price range
         restaurants = Restaurant.objects.filter(menus__price__gte=price_min, menus__price__lte=price_max)
-
+        print(restaurants)
         # Filter restaurants by number of dishes
         if num_dishes:
             if less_than:
@@ -65,6 +65,7 @@ class RestaurantList(generics.ListCreateAPIView):
 class RestaurantDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    
 
 class MenuList(generics.ListCreateAPIView):
     queryset = Menu.objects.all()
