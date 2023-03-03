@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 import json,datetime
 from django.utils import timezone
-from users.models import User, Purchase_History
+from users.models import User, PurchaseHistory
 from restaurant.models import Restaurant, Menu
 
 class Command(BaseCommand):
@@ -23,25 +23,35 @@ class Command(BaseCommand):
 
         # Create User objects from the data and save to database
         for user in user_data:
-           
             try:
+                u = User.objects.get(username=user['name'])
+                u.cash_balance = user['cashBalance']
+                u.save()
+            except User.DoesNotExist:
                 u = User.objects.create(username=user['name'], cash_balance=user['cashBalance'])
                 u.set_password(default_password)
                 u.save()
-            except KeyError as e:
-                print(f"Error creating user: {e}")
-                continue
+           
+        
+            
             for purchase in user['purchaseHistory']:
                 try:
-                    # Retrieve restaurant based on its name in the purchase history
-                    restaurant = Restaurant.objects.get(name=purchase['restaurantName'])
-                    # Retrieve menu item based on its name and restaurant_id
-                    menu_item = Menu.objects.get(dish_name=purchase['dishName'], restaurant_id=restaurant.id)
-                    # Create PurchaseHistory object and save to database
-                   
-                    purchase['transactionDate'] = datetime.datetime.strptime(purchase['transactionDate'], "%Y-%m-%d %H:%M:%S")
-                    purchase['transactionDate'] = timezone.make_aware(purchase['transactionDate'], timezone.get_default_timezone())
-                    Purchase_History.objects.create(user=u, restaurant=restaurant, menu=menu_item, transaction_amount=purchase['transactionAmount'], transaction_date=purchase['transactionDate'])
+                    # Retrieve or create Restaurant object based on its name
+                    restaurant, created = Restaurant.objects.get_or_create(name=purchase['restaurantName'])
+                    # Retrieve or create Menu object based on its name and restaurant
+                    menu_item, created = Menu.objects.get_or_create(dish_name=purchase['dishName'],price = purchase["transactionAmount"], restaurant=restaurant)
+                    try:
+                        purchase['transactionDate'] = datetime.datetime.strptime(purchase['transactionDate'], "%Y-%m-%d %H:%M")
+                        transaction_date = timezone.make_aware(purchase['transactionDate'], timezone.get_default_timezone())
+                    
+                    except ValueError:
+                        # The datetime string is invalid, set a default date
+                        # handling invalid date
+                        transaction_date = datetime.datetime(2020, 1, 1)
+                        transaction_date = timezone.make_aware(transaction_date, timezone.get_default_timezone())
+
+                    PurchaseHistory.objects.create(user=u, restaurant=restaurant, menu=menu_item, transaction_amount=purchase['transactionAmount'], transaction_date=transaction_date)
+                
                 except (KeyError, Restaurant.DoesNotExist, Menu.DoesNotExist) as e:
                     print(f"Error creating purchase history for user {u.username}: {e}")
                     continue

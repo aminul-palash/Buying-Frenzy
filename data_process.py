@@ -3,24 +3,25 @@ import datetime
 
 
 class DataProcess:
+    
     def __init__(self, restaurant_data=None, users_data=None):
         if restaurant_data != None:
             self.restaurant_data = self.json_read(restaurant_data)
         else:
             self.restaurant_data = []
         if users_data != None:
-            self.users_Data = self.json_read(users_data)
+            self.users_data = self.json_read(users_data)
         else:
-            self.users_Data = []
+            self.users_data = []
 
     def json_read(self, file_path):
         with open(file_path) as f:
             try:
-                user_data = json.load(f)
+                data = json.load(f)
             except json.JSONDecodeError as e:
                 print(f"Error decoding JSON: {e}")
                 exit()
-        return user_data
+        return data
 
     @staticmethod
     def convert_to_24_hour(time_str):
@@ -40,16 +41,21 @@ class DataProcess:
                 h = int(h)
                 return str(h)+":00"
         if "pm" in time_str:
-            time_str = time_str.replace("pm", "")
+            time_str = time_str.replace("pm","")
             time_str = time_str.strip()
             if ":" in time_str:
-                h, m = time_str.split(":")
-                h, m = h.strip(), m.strip()
+                h,m = time_str.split(":")
+                h,m = h.strip(),m.strip()
                 h = int(h)+12
+                if h==24:
+                    return "00:"+str(m)
                 return str(h)+":"+str(m)
             else:
                 h = time_str.strip()
                 h = int(h)+12
+                if h==24:
+                    return "00:00"
+                    
                 return str(h)+":00"
 
     @staticmethod
@@ -90,20 +96,32 @@ class DataProcess:
                 })
 
         # Serialize the opening hours array to JSON
-        json_str = json.dumps({"opening_hours": opening_hours})
+        # json_str = json.dumps({"opening_hours": opening_hours})
 
-        return json_str
+        return opening_hours
+    
+    def process_users_data(self):
+        for user in self.users_data:
+            user["name"] = user["name"].split()
+            user["name"] = "_".join(user["name"])
+            for item in user["purchaseHistory"]:
+                item["transactionDate"] = item["transactionDate"].replace("/","-")
+                temp = item["transactionDate"].split()
+                date,time = temp[0],temp[1] + temp[2]
+                d,m,y = date.split("-")
+                date = y + "-" + m + "-" + d
+                item["transactionDate"] = date + " " + DataProcess.convert_to_24_hour(time)
+
+        return self.users_data
 
     def process_restaurant_data(self):
-
         for res in self.restaurant_data:
-            #             print(res)
             res["openingHours"] = DataProcess.process_opening_hours(
                 res["openingHours"])
 
         return self.restaurant_data
 
 
-odp = DataProcess(restaurant_data="restaurant.json",
-                  users_data="users_data.json")
-data = odp.process_restaurant_data()
+# odp = DataProcess(restaurant_data="restaurant.json",
+#                   users_data="users_data.json")
+# data = odp.process_restaurant_data()

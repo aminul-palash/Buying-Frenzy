@@ -13,7 +13,7 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
     
-class Purchase_History(models.Model):
+class PurchaseHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
@@ -21,5 +21,5 @@ class Purchase_History(models.Model):
     transaction_date = models.DateTimeField()
     
     def __str__(self):
-        return self.user
+        return f"{self.user.username} bought {self.menu.dish_name} for {self.transaction_amount} at {self.restaurant.name} on {self.transaction_date}"
 

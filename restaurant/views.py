@@ -9,13 +9,18 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Restaurant, OpeningHours
 from .serializers import RestaurantSerializer, OpeningHoursSerializer,MenuSerializer
-
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 
+class CustomPagination(PageNumberPagination):
+    # http://example.com/api/restaurants/?p=2
+    page_size = 10
+    page_query_param = 'p'
+    max_page_size = 100
 
 class RestaurantByDateTimeList(generics.ListAPIView):
     serializer_class = RestaurantSerializer
-
+    pagination_class = CustomPagination
     def get_queryset(self):
         queryset = Restaurant.objects.all()
         dt = self.request.query_params.get('datetime')
@@ -57,10 +62,13 @@ class TopRestaurantsView(APIView):
         # Serialize and return data
         serializer = RestaurantSerializer(restaurants, many=True)
         return Response(serializer.data)
-    
+
+
+
 class RestaurantList(generics.ListCreateAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    pagination_class = CustomPagination
 
 class RestaurantDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Restaurant.objects.all()
@@ -70,6 +78,7 @@ class RestaurantDetail(generics.RetrieveUpdateDestroyAPIView):
 class MenuList(generics.ListCreateAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
+    pagination_class = CustomPagination
 
 class MenuDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Menu.objects.all()
@@ -78,6 +87,7 @@ class MenuDetail(generics.RetrieveUpdateDestroyAPIView):
 class OpeningHoursList(generics.ListCreateAPIView):
     queryset = OpeningHours.objects.all()
     serializer_class = OpeningHoursSerializer
+    pagination_class = CustomPagination
 
 class OpeningHoursDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = OpeningHours.objects.all()

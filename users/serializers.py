@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Purchase_History
+from .models import User, PurchaseHistory
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(default='dummy_password')
@@ -12,5 +12,5 @@ class UserSerializer(serializers.ModelSerializer):
 
 class PurchaseHistorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Purchase_History
+        model = PurchaseHistory
         fields = ('id', 'user', 'restaurant', 'menu', 'transaction_amount', 'transaction_date')
