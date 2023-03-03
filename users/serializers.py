@@ -1,14 +1,11 @@
 from rest_framework import serializers
-from .models import User, PurchaseHistory
+from .models import Customer, PurchaseHistory
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(default='dummy_password')
     class Meta:
-        model = User
-        fields = ['id', 'username', 'cash_balance','password']
-        read_only_fields = ['id']
+        model = Customer
+        fields = ('id', 'name', 'cash_balance')
         
-
 
 class PurchaseHistorySerializer(serializers.ModelSerializer):
     class Meta:

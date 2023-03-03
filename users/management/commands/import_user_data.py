@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 import json,datetime
 from django.utils import timezone
-from users.models import User, PurchaseHistory
+from users.models import Customer, PurchaseHistory
 from restaurant.models import Restaurant, Menu
 
 class Command(BaseCommand):
@@ -18,18 +18,14 @@ class Command(BaseCommand):
         # Parse the JSON data
         user_data = json.loads(data_str)
 
-        # Set the default password
-        default_password = 'admin'
-
         # Create User objects from the data and save to database
         for user in user_data:
             try:
-                u = User.objects.get(username=user['name'])
+                u = Customer.objects.get(name=user['name'])
                 u.cash_balance = user['cashBalance']
                 u.save()
-            except User.DoesNotExist:
-                u = User.objects.create(username=user['name'], cash_balance=user['cashBalance'])
-                u.set_password(default_password)
+            except Customer.DoesNotExist:
+                u = Customer.objects.create(name=user['name'], cash_balance=user['cashBalance'])
                 u.save()
            
         
@@ -53,6 +49,6 @@ class Command(BaseCommand):
                     PurchaseHistory.objects.create(user=u, restaurant=restaurant, menu=menu_item, transaction_amount=purchase['transactionAmount'], transaction_date=transaction_date)
                 
                 except (KeyError, Restaurant.DoesNotExist, Menu.DoesNotExist) as e:
-                    print(f"Error creating purchase history for user {u.username}: {e}")
+                    print(f"Error creating purchase history for user {u.name}: {e}")
                     continue
         

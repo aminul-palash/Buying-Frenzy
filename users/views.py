@@ -1,8 +1,7 @@
 from rest_framework.generics import RetrieveAPIView
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer, PurchaseHistorySerializer
-from .models import PurchaseHistory, User
+from .models import PurchaseHistory, Customer
 from rest_framework.pagination import PageNumberPagination
 
 
@@ -12,16 +11,13 @@ class CustomPagination(PageNumberPagination):
     page_query_param = 'p'
     max_page_size = 100
 
-class UserDetailAPIView(RetrieveAPIView):
-    queryset = User.objects.all()
+class CustomerList(generics.ListCreateAPIView):
+    queryset = Customer.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination
 
-    def get_object(self):
-        return self.request.user
-    
-class UserCreateView(generics.CreateAPIView):
-    queryset = User.objects.all()
+class CustomerDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Customer.objects.all()
     serializer_class = UserSerializer
     
 

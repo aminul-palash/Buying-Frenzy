@@ -102,8 +102,7 @@ class DataProcess:
     
     def process_users_data(self):
         for user in self.users_data:
-            user["name"] = user["name"].split()
-            user["name"] = "_".join(user["name"])
+            
             for item in user["purchaseHistory"]:
                 item["transactionDate"] = item["transactionDate"].replace("/","-")
                 temp = item["transactionDate"].split()
