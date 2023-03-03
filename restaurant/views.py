@@ -3,11 +3,12 @@ from .models import Restaurant, Menu, OpeningHours
 from .serializers import RestaurantSerializer, MenuSerializer, OpeningHoursSerializer
 from django.http import Http404
 from rest_framework import status
+import datetime
 from django.db.models import Q,Count
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Restaurant, OpeningHours
+from .models import Restaurant, OpeningHours, Menu
 from .serializers import RestaurantSerializer, OpeningHoursSerializer,MenuSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
@@ -18,51 +19,51 @@ class CustomPagination(PageNumberPagination):
     page_query_param = 'p'
     max_page_size = 100
 
+
 class RestaurantByDateTimeList(generics.ListAPIView):
+    # http://localhost:8000/restaurants/bydatetime/?date=2023-03-06&time=18:00:00
     serializer_class = RestaurantSerializer
     pagination_class = CustomPagination
+
     def get_queryset(self):
         queryset = Restaurant.objects.all()
-        dt = self.request.query_params.get('datetime')
-        if dt is not None:
-            dt = timezone.datetime.fromisoformat(dt)
+        date = self.request.query_params.get('date')
+        time = self.request.query_params.get('time')
+        
+        if date is not None and time is not None:
+            dt = datetime.datetime.strptime(date + " " + time, '%Y-%m-%d %H:%M:%S')
             weekday = dt.weekday()
-            time = dt.time()
             print(weekday)
-            print(time)
+            time = dt.time()
             queryset = queryset.filter(opening_hours__day_of_week=weekday, opening_hours__start_time__lte=time, opening_hours__end_time__gte=time)
+
         return queryset
-    
-class TopRestaurantsView(APIView):
-    def get(self, request, format=None):
+
+class TopRestaurantsView(generics.ListAPIView):
+    # /top-restaurants/?more_than=10&less_than=50&min_price=10&max_price=30&y=5
+    serializer_class = RestaurantSerializer
+
+    def get_queryset(self):
         # Get query parameters
-        num_dishes = request.query_params.get('num_dishes')
-        price_min = request.query_params.get('price_min')
-        price_max = request.query_params.get('price_max')
-        top_restaurants = request.query_params.get('top_restaurants')
-        less_than = request.query_params.get('less_than')
+        more_than = self.request.query_params.get('more_than')
+        less_than = self.request.query_params.get('less_than')
+        min_price = self.request.query_params.get('min_price')
+        max_price = self.request.query_params.get('max_price')
+        
+        # Build query based on parameters
+        query = Restaurant.objects.annotate(
+            num_dishes=Count('menus')
+        ).filter(
+            num_dishes__gt=more_than,
+            num_dishes__lt=less_than,
+            # menus__price__gte=min_price ,
+            # menus__price__lte=max_price,
+        ).order_by('name')
+        # Limit query to top y restaurants
+        y = int(self.request.query_params.get('y', 10))
+        query = query[:y]
 
-        # Filter restaurants by price range
-        restaurants = Restaurant.objects.filter(menus__price__gte=price_min, menus__price__lte=price_max)
-        print(restaurants)
-        # Filter restaurants by number of dishes
-        if num_dishes:
-            if less_than:
-                restaurants = restaurants.annotate(num_menu=Count('menus')).filter(num_menu__lt=num_dishes)
-            else:
-                restaurants = restaurants.annotate(num_menu=Count('menus')).filter(num_menu__gt=num_dishes)
-
-        # Rank restaurants alphabetically
-        restaurants = restaurants.order_by('name')
-
-        # Get top y restaurants
-        if top_restaurants:
-            restaurants = restaurants[:int(top_restaurants)]
-
-        # Serialize and return data
-        serializer = RestaurantSerializer(restaurants, many=True)
-        return Response(serializer.data)
-
+        return query
 
 
 class RestaurantList(generics.ListCreateAPIView):
