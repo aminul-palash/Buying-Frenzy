@@ -9,6 +9,7 @@ from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Restaurant, OpeningHours, Menu
+from rest_framework.filters import SearchFilter
 from .serializers import RestaurantSerializer, OpeningHoursSerializer,MenuSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
@@ -19,6 +20,19 @@ class CustomPagination(PageNumberPagination):
     page_query_param = 'p'
     max_page_size = 100
 
+class RestaurantSearchView(generics.ListAPIView):
+    serializer_class = RestaurantSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['name', 'menus__dish_name']
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        query = self.request.query_params.get('q', '')
+        queryset = Restaurant.objects.filter(
+            Q(name__icontains=query) |
+            Q(menus__dish_name__icontains=query)
+        ).distinct().order_by('name')
+        return queryset
 
 class RestaurantByDateTimeList(generics.ListAPIView):
     # http://localhost:8000/restaurants/bydatetime/?date=2023-03-06&time=18:00:00

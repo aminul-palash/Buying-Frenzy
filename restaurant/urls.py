@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import RestaurantList, RestaurantDetail, RestaurantByDateTimeList,MenuDetail,MenuList,OpeningHoursDetail,OpeningHoursList,TopRestaurantsView
-
+from .views import RestaurantList, RestaurantDetail, RestaurantByDateTimeList
+from .views import MenuDetail,MenuList,OpeningHoursDetail,OpeningHoursList
+from .views import TopRestaurantsView, RestaurantSearchView
 
 urlpatterns = [
     path('restaurants/', RestaurantList.as_view(), name='restaurant-list'),
@@ -11,6 +12,12 @@ urlpatterns = [
     # /top-restaurants/?more_than=10&less_than=50&min_price=10&max_price=30&y=5
     path('menus/', MenuList.as_view(), name='menu-list'),
     path('menus/<int:pk>/', MenuDetail.as_view(), name='menu-detail'),
+
+    path('restaurants/search/', RestaurantSearchView.as_view(), name='restaurant-search'),
+    
+    
+    
+    
     path('opening_hours/', OpeningHoursList.as_view(), name='opening-hours-list'),
     path('opening_hours/<int:pk>/', OpeningHoursDetail.as_view(), name='opening-hours-detail'),
 ]
