@@ -11,7 +11,7 @@ class CustomPagination(PageNumberPagination):
     page_query_param = 'p'
     max_page_size = 100
 
-class CustomerList(generics.ListCreateAPIView):
+class CustomerList(generics.ListAPIView):
     queryset = Customer.objects.all()
     serializer_class = UserSerializer
     pagination_class = CustomPagination

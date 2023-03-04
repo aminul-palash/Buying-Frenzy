@@ -14,6 +14,9 @@ from .serializers import RestaurantSerializer, OpeningHoursSerializer,MenuSerial
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 
+
+
+
 class CustomPagination(PageNumberPagination):
     # http://example.com/api/restaurants/?p=2
     page_size = 10
@@ -33,6 +36,8 @@ class RestaurantSearchView(generics.ListAPIView):
             Q(menus__dish_name__icontains=query)
         ).distinct().order_by('name')
         return queryset
+
+
 
 class RestaurantByDateTimeList(generics.ListAPIView):
     # http://localhost:8000/restaurants/bydatetime/?date=2023-03-06&time=18:00:00
