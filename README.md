@@ -121,10 +121,10 @@ The response is a JSON array of restaurant objects that match the specified date
 
 The URL http://localhost:8000/api/top-restaurants/ appears to be a RESTful API endpoint that retrieves a list of top-rated restaurants based on certain filters. It accepts five query parameters:
 
-* [more_than:](#) An integer that specifies the minimum rating value for the restaurants to be included in the results. In this case, the value is 10.
-* [less_than:](#) An integer that specifies the maximum rating value for the restaurants to be included in the results. In this case, the value is 50.
-* [min_price:](#) A float that specifies the minimum price value for the restaurants to be included in the results. In this case, the value is 10.
-* [max_price:](#) A float that specifies the maximum price value for the restaurants to be included in the results. In this case, the value is 30.
+* [more_than:](#) An integer that specifies the minimum number of menu for the restaurants. In this case, the value is 10.
+* [less_than:](#) An integer that specifies the maximum number of menu for the restaurants. In this case, the value is 50.
+* [min_price:](#) A float that specifies the minimum price value of menu for the restaurants to be included in the results. In this case, the value is 10.
+* [max_price:](#) A float that specifies the maximum price value of menu for the restaurants to be included in the results. In this case, the value is 30.
 * [y:](#) List top y restaurants .
 
 ### Request Example
@@ -306,14 +306,15 @@ If the purchase is successful, the server will respond with a JSON payload conta
 ```
 {
     "message": "Purchase successful",
-    "restaurant_cash_balance": 100.0,
-    "user_cash_balance": 50.0,
+    "restaurant_cash_balance": 569.98,
+    "user_cash_balance": 688.26,
     "purchase": {
-        "id": 1,
-        "username": "john_doe",
-        "restaurant_name": "McDonald's",
-        "menu_item_name": "Big Mac",
-        "purchase_time": "2023-03-04T15:00:00Z"
+        "id": 9309,
+        "user": 1,
+        "restaurant": "51fa108c-6038-44d0-a5fa-f58ac7b61c2f",
+        "menu": 194,
+        "transaction_amount": "12.44",
+        "transaction_date": "2023-03-04T15:09:00.765800Z"
     }
 }
 
