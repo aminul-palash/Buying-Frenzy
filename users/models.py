@@ -4,7 +4,7 @@ from django.conf import settings
 from restaurant.models import Restaurant, Menu
 
 from django.db import models
-
+ 
 
 class Customer(models.Model):
     name = models.CharField(max_length=255)
@@ -14,6 +14,7 @@ class Customer(models.Model):
         return self.name
     
 class PurchaseHistory(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(Customer, on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)

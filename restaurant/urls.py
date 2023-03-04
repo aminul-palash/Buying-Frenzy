@@ -4,7 +4,7 @@ from .views import MenuDetail,MenuList,OpeningHoursDetail,OpeningHoursList
 from .views import TopRestaurantsView, RestaurantSearchView
 
 urlpatterns = [
-    # path('restaurants/', RestaurantList.as_view(), name='restaurant-list'),
+    path('restaurants/', RestaurantList.as_view(), name='restaurant-list'),
     # path('restaurants/<int:pk>/', RestaurantDetail.as_view(), name='restaurant-detail'),
     # http://localhost:8000/api/restaurants/bydatetime/?date=2023-03-06&time=18:00:00
     path('restaurants/bydatetime/', RestaurantByDateTimeList.as_view(), name='restaurant-bydatetime-list'),
