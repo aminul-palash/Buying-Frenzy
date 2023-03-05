@@ -182,14 +182,14 @@ The response is a JSON array of restaurant objects that match the specified filt
 
 ## 3. Search Restaurant by restaurant name or dish name
 
-The URL http://localhost:8000/api/restaurants/search/?q=text is a RESTful API endpoint that allows searching for restaurants based on a text query string.
+The URL http://127.0.0.1:8000/api/restaurants/search/?q=cocktail is a RESTful API endpoint that allows searching for restaurants based on a text query string.
 
 The endpoint accepts a single query parameter q which represents the text query to search for. This query parameter can include the name of the restaurant or the name of a dish served at the restaurant. For example, if the query parameter is set to italian pasta, the API will return a list of all the restaurants that serve Italian cuisine and have pasta dishes on their menu.
 
 ### Request Example
 
 ```
-http://localhost:8000/api/restaurants/search/?q=Sushi
+http://127.0.0.1:8000/api/restaurants/search/?q=cocktail
 
 ```
 
@@ -272,9 +272,9 @@ The request must include a JSON payload with the following fields:
 curl --location --request POST 'http://localhost:8000/api/purchase/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "username": "john_doe",
-    "restaurant_name": "McDonald's",
-    "menu_item_name": "Big Mac"
+    "username": "Edith Johnson",
+    "restaurant_name": "12th Ave. Grill",
+    "menu_item_name": "Petits Fanchonettes"
 }'
 
 ```
