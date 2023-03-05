@@ -3,21 +3,7 @@ from rest_framework import generics
 from .serializers import UserSerializer, PurchaseHistorySerializer
 from .models import PurchaseHistory, Customer
 from rest_framework.pagination import PageNumberPagination
-
-
-class CustomPagination(PageNumberPagination):
-    # http://example.com/api/restaurants/?p=2
-    page_size = 10
-    page_query_param = 'p'
-    max_page_size = 100
-
-class CustomerList(generics.ListAPIView):
-    queryset = Customer.objects.all()
-    serializer_class = UserSerializer
-    pagination_class = CustomPagination
-
-
-
+from rest_framework import status
 from datetime import datetime
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
@@ -27,7 +13,15 @@ from .models import PurchaseHistory, Restaurant, Customer
 from .serializers import PurchaseHistorySerializer
 from restaurant.models import Restaurant, Menu
 
+
+class CustomPagination(PageNumberPagination):
+    page_size = 10
+    page_query_param = 'p'
+    max_page_size = 100
+
+
 class PurchaseView(APIView):
+
     def post(self, request):
         # Get the request data
         username = request.data.get('username')
@@ -37,11 +31,11 @@ class PurchaseView(APIView):
         # Get the user and check if they have enough cash balance
         user = get_object_or_404(Customer, name__iexact=username)
         # menu_item = get_object_or_404(Menu, dish_name__iexact=menu_item_name)
+        # menu_item = Menu.objects.filter(dish_name__iexact=menu_item_name).first()
+        menu_item = Menu.objects.filter(restaurant__name__iexact=restaurant_name, dish_name__iexact=menu_item_name).first()
 
-        menu_item = Menu.objects.filter(dish_name__iexact=menu_item_name).first()
         if menu_item is None:
-            return Response({'error': 'Menu not found'}, status=status.HTTP_404_NOT_FOUND)
-
+            return Response({'error': 'Menu not found at specified restaurant'}, status=status.HTTP_404_NOT_FOUND)
 
         if user.cash_balance < menu_item.price:
             return Response({
@@ -77,26 +71,12 @@ class PurchaseView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
-
-
-
-
-
-
-
-
+class CustomerList(generics.ListAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = UserSerializer
+    pagination_class = CustomPagination
 
 class CustomerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
     serializer_class = UserSerializer
-    
 
-class PurchaseHistoryList(generics.ListCreateAPIView):
-    queryset = PurchaseHistory.objects.all()
-    serializer_class = PurchaseHistorySerializer
-    pagination_class = CustomPagination
-
-class PurchaseHistoryDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = PurchaseHistory.objects.all()
-    serializer_class = PurchaseHistorySerializer
-    

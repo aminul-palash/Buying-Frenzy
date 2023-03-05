@@ -36,22 +36,8 @@ python manage.py runserver
 
 Instruction for api is given [here]().
 
-## 1. API root url
 
-```
-http://127.0.0.1:8000/api
-
-```
-This will return list of users with purchase history data..
-
-To navigate specific page of data parse query parameter 'p'. For example
-
-```
-http://127.0.0.1:8000/api/?p=page_number
-
-```
-
-## 2. Search restaurant by date time
+## 1. Search restaurant by date time
 
 This RESTful API endpoint provides a list of restaurants that are available at a specific date and time. It accepts two query parameters:
 
@@ -117,7 +103,7 @@ Content-Type: application/json
 ```
 The response is a JSON array of restaurant objects that match the specified date and time criteria.
 
-## 3. Top Restaurant
+## 2. Top Restaurant
 
 The URL http://localhost:8000/api/top-restaurants/ appears to be a RESTful API endpoint that retrieves a list of top-rated restaurants based on certain filters. It accepts five query parameters:
 
@@ -194,7 +180,7 @@ Content-Type: application/json
 ```
 The response is a JSON array of restaurant objects that match the specified filters.
 
-## 4. Search Restaurant by restaurant name or dish name
+## 3. Search Restaurant by restaurant name or dish name
 
 The URL http://localhost:8000/api/restaurants/search/?q=text is a RESTful API endpoint that allows searching for restaurants based on a text query string.
 
@@ -267,7 +253,7 @@ Content-Type: application/json
 ```
 The response is a JSON array of restaurant objects that match the specified text query. \
 
-## Food Ordering Restaurant API
+## 4. Food Ordering Restaurant API
 This is an API for ordering food from various restaurants.
 ### Endpoint
 POST /api/purchase/
@@ -322,11 +308,209 @@ If the purchase is successful, the server will respond with a JSON payload conta
 If there is an error with the request, the server will respond with an appropriate error message and status code.
 
 
+# EXTRA API URL FOR CONVINIENCES
+
+## Users API
+### Base URL
+
+```
+https://example.com/api/
+
+```
+### List Users
+### Request
+GET /api/users/?p=<page_number>
+
+* [p](#): The page number of the results to return. If not provided, defaults to page 1.
+
+### Response
+```
+HTTP 200 OK
+Allow: GET, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "count": 998,
+    "next": "http://localhost:8000/api/users/?p=2",
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "name": "Edith Johnson",
+            "cash_balance": "688.26"
+        },
+        {
+            "id": 2,
+            "name": "Edward Gonzalez",
+            "cash_balance": "237.61"
+        }
+    ]
+}
+
+```
+If there is an error with the request, the server will respond with an appropriate error message and status code.
+
+
+## Restaurant List
+
+### Request
+GET /api/restaurants/?p=<page_number>
+
+* [p](#): The page number of the results to return. If not provided, defaults to page 1.
+
+### Response
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+    {
+        "id": "89a8d37b-4eda-4068-ab85-d9dd0aa60177",
+        "name": "'Ulu Ocean Grill and Sushi Lounge",
+        "cash_balance": "4483.84",
+        "menus": [
+            {
+                "id": 1,
+                "dish_name": "Postum cereal coffee",
+                "price": "13.88",
+                "restaurant": "89a8d37b-4eda-4068-ab85-d9dd0aa60177"
+            }
+            ....
+        ],
+        "opening_hours": [
+            {
+                "id": 1,
+                "restaurant": "89a8d37b-4eda-4068-ab85-d9dd0aa60177",
+                "day_of_week": 0,
+                "start_time": "14:30:00",
+                "end_time": "20:00:00"
+            }
+            ....
+        ]
+    },
+    {
+        "id": "89a8d37b-4eda-4068-ab85-d9dd0aa60177",
+        "name": "'Ulu Ocean Grill and Sushi Lounge",
+        "cash_balance": "4483.84",
+        "menus": [
+            {
+                "id": 1,
+                "dish_name": "Postum cereal coffee",
+                "price": "13.88",
+                "restaurant": "89a8d37b-4eda-4068-ab85-d9dd0aa60177"
+            }
+            ....
+        ],
+        "opening_hours": [
+            {
+                "id": 1,
+                "restaurant": "89a8d37b-4eda-4068-ab85-d9dd0aa60177",
+                "day_of_week": 0,
+                "start_time": "14:30:00",
+                "end_time": "20:00:00"
+            }
+            ....
+        ]
+    }
+]
+
+```
+If there is an error with the request, the server will respond with an appropriate error message and status code.
+
+
+## User Details API
+### Base URL
+
+```
+https://example.com/api/
+
+```
+### User Details
+### Request
+GET /api/users/<int:pk>/
+
+* [pk](#): The ID of the user to retrieve.
+
+### Response
+```
+HTTP 200 OK
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "id": 1,
+    "name": "Edith Johnson",
+    "cash_balance": "688.26"
+}
+
+```
+If there is an error with the request, the server will respond with an appropriate error message and status code.
+
+
+## Menu List
+
+### Request
+GET /api/menus/?p=<page_number>
+
+* [p](#): The page number of the results to return. If not provided, defaults to page 1.
+
+### Response
+```
+HTTP 200 OK
+Allow: GET, POST, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "count": 18716,
+    "next": "http://localhost:8000/api/menus/?p=2",
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "dish_name": "Postum cereal coffee",
+            "price": "13.88",
+            "restaurant": "89a8d37b-4eda-4068-ab85-d9dd0aa60177"
+        },
+        {
+            "id": 2,
+            "dish_name": "GAI TOM KA: CHICKEN IN COCONUT CREAM SOUP WITH LIME JUICE GALANGA AND CHILI",
+            "price": "10.64",
+            "restaurant": "89a8d37b-4eda-4068-ab85-d9dd0aa60177"
+        }
+    ]
+}
+```
+If there is an error with the request, the server will respond with an appropriate error message and status code.
+
+### Menu Details
+### Request
+GET /api/menus/<int:pk>/
+
+* [pk](#): The ID of the menu to retrieve.
+
+### Response
+```
+HTTP 200 OK
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "id": 1,
+    "dish_name": "Postum cereal coffee",
+    "price": "13.88",
+    "restaurant": "89a8d37b-4eda-4068-ab85-d9dd0aa60177"
+}
+
+```
+If there is an error with the request, the server will respond with an appropriate error message and status code.
 
 
 
 
-
-
-
-
+## License
+This project is licensed under the MIT License. See the [LICENSE](#) file for details.

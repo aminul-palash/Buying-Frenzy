@@ -15,8 +15,6 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 
 
-
-
 class CustomPagination(PageNumberPagination):
     # http://example.com/api/restaurants/?p=2
     page_size = 10
@@ -32,15 +30,12 @@ class RestaurantSearchView(generics.ListAPIView):
     def get_queryset(self):
         query = self.request.query_params.get('q', '')
         queryset = Restaurant.objects.filter(
-            Q(name__icontains=query) |
-            Q(menus__dish_name__icontains=query)
+            Q(name__icontains=query) | Q(menus__dish_name__icontains=query)
         ).distinct().order_by('name')
         return queryset
 
 
-
 class RestaurantByDateTimeList(generics.ListAPIView):
-    # http://localhost:8000/restaurants/bydatetime/?date=2023-03-06&time=18:00:00
     serializer_class = RestaurantSerializer
     pagination_class = CustomPagination
 
@@ -48,18 +43,22 @@ class RestaurantByDateTimeList(generics.ListAPIView):
         queryset = Restaurant.objects.all()
         date = self.request.query_params.get('date')
         time = self.request.query_params.get('time')
-        
+
         if date is not None and time is not None:
             dt = datetime.datetime.strptime(date + " " + time, '%Y-%m-%d %H:%M:%S')
             weekday = dt.weekday()
-            print(weekday)
             time = dt.time()
-            queryset = queryset.filter(opening_hours__day_of_week=weekday, opening_hours__start_time__lte=time, opening_hours__end_time__gte=time)
 
+            queryset = queryset.filter(
+                opening_hours__day_of_week=weekday, 
+                opening_hours__start_time__lte=time, 
+                opening_hours__end_time__gte=time
+            )
+        
         return queryset
 
+
 class TopRestaurantsView(generics.ListAPIView):
-    # /top-restaurants/?more_than=10&less_than=50&min_price=10&max_price=30&y=5
     serializer_class = RestaurantSerializer
 
     def get_queryset(self):
@@ -68,16 +67,14 @@ class TopRestaurantsView(generics.ListAPIView):
         less_than = self.request.query_params.get('less_than')
         min_price = self.request.query_params.get('min_price')
         max_price = self.request.query_params.get('max_price')
-        
-        # Build query based on parameters
-        query = Restaurant.objects.annotate(
-            num_dishes=Count('menus')
-        ).filter(
+       
+        query = Restaurant.objects.annotate( num_dishes=Count('menus')).filter(
             num_dishes__gt=more_than,
             num_dishes__lt=less_than,
             # menus__price__gte=min_price ,
             # menus__price__lte=max_price,
         ).order_by('name')
+
         # Limit query to top y restaurants
         y = int(self.request.query_params.get('y', 10))
         query = query[:y]
@@ -89,10 +86,6 @@ class RestaurantList(generics.ListCreateAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
     pagination_class = CustomPagination
-
-class RestaurantDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Restaurant.objects.all()
-    serializer_class = RestaurantSerializer
     
 
 class MenuList(generics.ListCreateAPIView):
@@ -103,14 +96,4 @@ class MenuList(generics.ListCreateAPIView):
 class MenuDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
-
-class OpeningHoursList(generics.ListCreateAPIView):
-    queryset = OpeningHours.objects.all()
-    serializer_class = OpeningHoursSerializer
-    pagination_class = CustomPagination
-
-class OpeningHoursDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = OpeningHours.objects.all()
-    serializer_class = OpeningHoursSerializer
-
 
