@@ -28,8 +28,6 @@ class Command(BaseCommand):
                 u = Customer.objects.create(name=user['name'], cash_balance=user['cashBalance'])
                 u.save()
            
-        
-            
             for purchase in user['purchaseHistory']:
                 try:
                     # Retrieve or create Restaurant object based on its name

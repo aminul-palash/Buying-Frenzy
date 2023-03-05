@@ -2,17 +2,15 @@ import os
 import json
 import argparse
 from django.core.management import execute_from_command_line
-from data_process import DataProcess
+from data_process import DataProcessor
 
-# Set the Django settings module
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'food_delivery.settings')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'food_delivery.settings'
 
 def run_import_data(user_data_file, restaurant_data_file):
 
-    odp = DataProcess(restaurant_data=restaurant_data_file,users_data=user_data_file)
-    user_data = odp.process_users_data()
-    restaurant_data = odp.process_restaurant_data()
+    processor = DataProcessor(restaurant_data=restaurant_data_file,users_data=user_data_file)
+    user_data = processor.process_users_data()
+    restaurant_data = processor.process_restaurant_data()
     
     # Call the management command with the data argument
     print("restaurant data importing ...")
