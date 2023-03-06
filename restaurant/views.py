@@ -71,8 +71,8 @@ class TopRestaurantsView(generics.ListAPIView):
         query = Restaurant.objects.annotate( num_dishes=Count('menus')).filter(
             num_dishes__gt=more_than,
             num_dishes__lt=less_than,
-            # menus__price__gte=min_price ,
-            # menus__price__lte=max_price,
+            menus__price__gte=min_price ,
+            menus__price__lte=max_price,
         ).order_by('name')
 
         # Limit query to top y restaurants
