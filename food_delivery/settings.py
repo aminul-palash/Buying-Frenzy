@@ -1,14 +1,12 @@
-
 from pathlib import Path
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-73l1un&-ahuqno6-27n=$uh@16bi18vxsejf)=6b_jw^5l@1@l'
+SECRET_KEY = 'django-insecure-=ol%k3$)(e(emo&*a*%8c@y-sfh!43(*5#9g5-v&uv4---x^5a'
+
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,9 +16,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'users',
+    'order',
     'restaurant',
-  
 ]
 
 MIDDLEWARE = [
@@ -53,14 +50,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'food_delivery.wsgi.application'
 
-
-
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'food_db',
+        'USER': 'postgres',
+        'PASSWORD': 'new_password',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -79,9 +76,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
+
 USE_TZ = True
+
 STATIC_URL = 'static/'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
