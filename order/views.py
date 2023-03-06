@@ -4,7 +4,7 @@ from .serializers import UserSerializer, PurchaseHistorySerializer
 from .models import PurchaseHistory, Customer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
-from datetime import datetime
+from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -54,7 +54,7 @@ class PurchaseView(APIView):
             restaurant_id=restaurant.id,
             user_id=user.id,
             transaction_amount=transaction_amount,
-            transaction_date=datetime.now()
+            transaction_date=timezone.now()
         )
 
         # Update the cash balance of the restaurant

@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 import json,datetime
 from django.utils import timezone
-from users.models import Customer, PurchaseHistory
+from order.models import Customer, PurchaseHistory
 from restaurant.models import Restaurant, Menu
 
 class Command(BaseCommand):
