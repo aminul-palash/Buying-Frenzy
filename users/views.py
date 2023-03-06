@@ -45,7 +45,7 @@ class PurchaseView(APIView):
         # Calculate the transaction amount and update the user's cash balance
         transaction_amount = menu_item.price
         user.cash_balance -= transaction_amount
-        user.save()
+        
 
         # Retrieve the restaurant by name and create a new PurchaseHistory instance
         restaurant = get_object_or_404(Restaurant, name__iexact=restaurant_name)
@@ -60,6 +60,7 @@ class PurchaseView(APIView):
         # Update the cash balance of the restaurant
         restaurant.cash_balance += transaction_amount
         restaurant.save()
+        user.save()
 
         # Return a response indicating success and the updated cash balances
         serializer = PurchaseHistorySerializer(purchase)
