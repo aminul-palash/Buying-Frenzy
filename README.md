@@ -184,12 +184,12 @@ The response is a JSON array of restaurant objects that match the specified filt
 
 The URL http://127.0.0.1:8000/api/restaurants/search/?q=cocktail is a RESTful API endpoint that allows searching for restaurants based on a text query string.
 
-The endpoint accepts a single query parameter q which represents the text query to search for. This query parameter can include the name of the restaurant or the name of a dish served at the restaurant. For example, if the query parameter is set to italian pasta, the API will return a list of all the restaurants that serve Italian cuisine and have pasta dishes on their menu.
+The endpoint accepts a single query parameter q which represents the text query to search for. This query parameter can include the name of the restaurant or the name of a dish served at the restaurant. For example, if the query parameter is set to sushi, the API will return a list of all the restaurants that serve suhsi cuisine and have suhsi dishes on their menu.
 
 ### Request Example
 
 ```
-http://127.0.0.1:8000/api/restaurants/search/?q=cocktail
+http://127.0.0.1:8000/api/restaurants/search/?q=suhsi
 
 ```
 
