@@ -24,6 +24,13 @@ Finaly run the following command to ensure that everything is being installed co
 pip install -r requirements.txt
 ```
 
+## Run Migrations
+```
+python manage.py makemigrations
+python manage.py migrate
+
+```
+
 ## Run Data import Module
 ```
 python run_import_data.py
