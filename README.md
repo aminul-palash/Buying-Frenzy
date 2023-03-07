@@ -509,7 +509,16 @@ Vary: Accept
 ```
 If there is an error with the request, the server will respond with an appropriate error message and status code.
 
+## Deployment
+This API project is deployed in pythonanywhere.
+To navigate the apis go through this root url
+```
+https://aminulpalash.pythonanywhere.com
 
+# example url
+https://aminulpalash.pythonanywhere.com/api/restaurants/
+https://aminulpalash.pythonanywhere.com/api/users/
+```
 
 
 ## License
