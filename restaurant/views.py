@@ -4,7 +4,7 @@ from .serializers import RestaurantSerializer, MenuSerializer, OpeningHoursSeria
 from django.http import Http404
 from rest_framework import status
 import datetime
-from django.db.models import Q,Count
+from django.db.models import F,Count,Sum,Q
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -57,30 +57,31 @@ class RestaurantByDateTimeList(generics.ListAPIView):
         
         return queryset
 
-
 class TopRestaurantsView(generics.ListAPIView):
     serializer_class = RestaurantSerializer
-
+    
     def get_queryset(self):
-        # Get query parameters
-        more_than = self.request.query_params.get('more_than')
-        less_than = self.request.query_params.get('less_than')
-        min_price = self.request.query_params.get('min_price')
-        max_price = self.request.query_params.get('max_price')
-       
-        query = Restaurant.objects.annotate( num_dishes=Count('menus')).filter(
-            num_dishes__gt=more_than,
-            num_dishes__lt=less_than,
-            menus__price__gte=min_price ,
-            menus__price__lte=max_price,
-        ).order_by('name')
-
-        # Limit query to top y restaurants
+        more_than = int(self.request.query_params.get('more_than'))
+        less_than = int(self.request.query_params.get('less_than'))
+        min_menu_item_price = float(self.request.query_params.get('min_price', 0))
+        max_menu_item_price = float(self.request.query_params.get('max_price', float('inf')))
         y = int(self.request.query_params.get('y', 10))
-        query = query[:y]
+        
+        restaurants = Restaurant.objects.annotate(
+            num_menu_items=Count('menus'),
+            total_menu_item_price=Sum('menus__price'),
+        )
+        # for restaurant in restaurants:
+        #     print(f"Restaurant {restaurant.name}: {restaurant.num_menu_items} menu items, total menu item price = {restaurant.total_menu_item_price}")
 
-        return query
-
+        # F is used to reference the annotated fields in the filter expression
+        filtered_restaurants = restaurants.filter(
+            num_menu_items__gt=0,
+            total_menu_item_price__range=[min_menu_item_price * F('num_menu_items'), max_menu_item_price * F('num_menu_items')],
+            num_menu_items__range=[more_than,less_than],
+        ).order_by('name')
+        
+        return filtered_restaurants[:y]
 
 class RestaurantList(generics.ListCreateAPIView):
     queryset = Restaurant.objects.all()
@@ -96,4 +97,36 @@ class MenuList(generics.ListCreateAPIView):
 class MenuDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
+
+
+# class TopRestaurantsView(generics.ListAPIView):
+#     serializer_class = RestaurantSerializer
+
+#     def get_queryset(self):
+#         # Get query parameters
+#         more_than = self.request.query_params.get('more_than')
+#         less_than = self.request.query_params.get('less_than')
+#         min_price = self.request.query_params.get('min_price')
+#         max_price = self.request.query_params.get('max_price')
+        
+#         restaurants = Restaurant.objects.filter(menus__price__range=[min_price, max_price]).distinct()
+
+#         # print(restaurants)
+
+      
+#         query = Restaurant.objects.annotate( num_dishes=Count('menus')).filter(
+#             num_dishes__gt=more_than,
+#             num_dishes__lt=less_than,
+#             # menus__price__gte=min_price ,
+#             # menus__price__lte=max_price,
+#         ).order_by('name')
+
+#         # Limit query to top y restaurants
+#         y = int(self.request.query_params.get('y', 10))
+#         query = query[:y]
+
+#         # return query
+#         return restaurants[:y]
+
+
 

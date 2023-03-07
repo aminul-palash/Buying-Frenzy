@@ -54,7 +54,7 @@ WSGI_APPLICATION = 'food_delivery.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'food_db',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'new_password',
         'HOST': 'localhost',
