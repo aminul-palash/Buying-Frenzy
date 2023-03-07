@@ -23,6 +23,14 @@ Finaly run the following command to ensure that everything is being installed co
 ```bash
 pip install -r requirements.txt
 ```
+
+## Run Data import Module
+```
+python run_import_data.py
+
+```
+This will perform data processing and formating part and finaly import the restaurant and user data to database
+
 ## Run Server
 
 To run server
