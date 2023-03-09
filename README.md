@@ -538,3 +538,9 @@ https://aminulpalash.pythonanywhere.com/api/users/
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](#) file for details.
+
+### TODO:
+- [ ] Add docstring
+- [ ] add docker
+- [ ] writing tests 
+- [ ] README update on database setup
