@@ -1,6 +1,6 @@
 from rest_framework.generics import RetrieveAPIView
 from rest_framework import generics
-from .serializers import UserSerializer, PurchaseHistorySerializer
+from .serializers import CustomerSerializer, PurchaseHistorySerializer
 from .models import PurchaseHistory, Customer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
@@ -74,10 +74,10 @@ class PurchaseView(APIView):
 
 class CustomerList(generics.ListAPIView):
     queryset = Customer.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomerSerializer
     pagination_class = CustomPagination
 
 class CustomerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = CustomerSerializer
 

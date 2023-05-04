@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Customer, PurchaseHistory
 
-class UserSerializer(serializers.ModelSerializer):
+class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ('id', 'name', 'cash_balance')
