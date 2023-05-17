@@ -14,9 +14,9 @@ def run_import_data(user_data_file, restaurant_data_file):
     
     # Call the management command with the data argument
     print("restaurant data importing ...")
-    execute_from_command_line(['manage.py', 'import_restaurant_data', '--app', 'restaurant', '--data', json.dumps(restaurant_data)])
+    # execute_from_command_line(['manage.py', 'import_restaurant_data', '--app', 'restaurant', '--data', json.dumps(restaurant_data)])
     print("users data importing ...")
-    execute_from_command_line(['manage.py', 'import_user_data', '--app', 'user', '--data', json.dumps(user_data)])
+    execute_from_command_line(['manage.py', 'import_user_data', '--app', 'order', '--data', json.dumps(user_data)])
 
 def main():
     parser = argparse.ArgumentParser()

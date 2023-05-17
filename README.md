@@ -7,6 +7,7 @@
 
 ### Virtual Environment
 
+!python manage.py migrate --run-syncdb
 
 #### Linux
 

@@ -1,9 +1,10 @@
 from django.db import models
 from django.conf import settings
-# from django.contrib.auth.models import AbstractUser
 from restaurant.models import Restaurant, Menu
 
-from django.db import models
+from django.contrib.auth.models import User
+
+
  
 
 class Customer(models.Model):
@@ -24,3 +25,19 @@ class PurchaseHistory(models.Model):
     def __str__(self):
         return f"{self.user.name} bought {self.menu.dish_name} for {self.transaction_amount} at {self.restaurant.name} on {self.transaction_date}"
 
+class Payment(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=8, decimal_places=2)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.username
+
+
+class Transaction(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.username

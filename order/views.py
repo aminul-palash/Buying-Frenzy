@@ -12,6 +12,46 @@ from rest_framework import status
 from .models import PurchaseHistory, Restaurant, Customer
 from .serializers import PurchaseHistorySerializer
 from restaurant.models import Restaurant, Menu
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import AccessToken
+from .serializers import UserRegistrationSerializer
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
+from .serializers import UserLoginSerializer
+
+class UserLoginView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = UserLoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # Check if user exists
+        try:
+            user = User.objects.get(username=serializer.validated_data['username'])
+        except User.DoesNotExist:
+            raise AuthenticationFailed('Invalid credentials')
+
+        # Check if password is correct
+        if not user.check_password(serializer.validated_data['password']):
+            raise AuthenticationFailed('Invalid credentials')
+
+        # Generate access token
+        access_token = AccessToken.for_user(user)
+
+        return Response({'access_token': str(access_token)})
+
+
+class UserRegistrationView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = UserRegistrationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        access_token = AccessToken.for_user(user)
+        return Response({'access_token': str(access_token)})
+
 
 
 class CustomPagination(PageNumberPagination):

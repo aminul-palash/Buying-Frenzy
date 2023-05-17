@@ -3,6 +3,7 @@ import json,datetime
 from django.utils import timezone
 from order.models import Customer, PurchaseHistory
 from restaurant.models import Restaurant, Menu
+from django.contrib.auth.models import User
 
 class Command(BaseCommand):
     help = 'Import user data'
@@ -18,8 +19,33 @@ class Command(BaseCommand):
         # Parse the JSON data
         user_data = json.loads(data_str)
 
+
+
+
         # Create User objects from the data and save to database
         for user in user_data:
+
+            try:
+                username = user['name'].split()
+                firstname = username[0]
+                lastname = ' '.join(username[1:])
+                username = '_'.join(username)
+                print(username,firstname,lastname)
+                user_item = User(
+                    first_name=firstname,
+                    last_name=lastname,
+                    username=username,
+                    password='password123'
+                )
+                user_item.save()
+
+            except:
+                pass
+
+
+
+
+
             try:
                 u = Customer.objects.get(name=user['name'])
                 u.cash_balance = user['cashBalance']
